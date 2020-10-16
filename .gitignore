@@ -1,0 +1,9 @@
+**debug
+env
+**__pycache__
+**credentials
+**cache
+.DS_Store
+notebooks
+**/*.ipynb_checkpoints/
+docs/_build

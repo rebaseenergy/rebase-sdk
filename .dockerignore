@@ -1,0 +1,9 @@
+*/node_modules
+*.log
+**notebooks
+**debug
+env
+**__pycache__
+**credentials
+**cache
+.DS_Store
