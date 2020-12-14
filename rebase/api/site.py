@@ -3,6 +3,13 @@ import json
 import pandas as pd
 import requests
 
+class SiteTemplate():
+
+
+    def __init__(self, latitude, longitude):
+        self.latitude = latitude
+        self.longitude = longitude
+
 class Site():
 
     base_path = 'platform/v1'

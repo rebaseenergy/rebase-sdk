@@ -10,30 +10,6 @@ Following are a few examples of how to use :meth:`rebase.Site.create` to create 
 Common for all sites are that they need a position (latitude, longitude) as well as a name and type.
 Full site configuration requirements can be viewed on the :ref:`configurations` page.
 
-Electricity demand
-~~~~~~~~~~~~~~~~~~
-
-Create a site that will be used to forecast electricity demand.
-
-::
-
-  >>> import rebase as rb
-
-  >>> site_config = {
-  >>>    'type': 'load',
-  >>>    'name': 'My load site',
-  >>>    'latitude': 53.41,
-  >>>    'longitude': 5.94,
-  >>>    'nwps': ['DWD_ICON-EU', 'NCEP_GFS'],
-  >>>    'variables': [
-  >>>        {'name': 'Temperature', 'lag': [-4, -3, -2, -1, 1, 2, 3, 4]},
-  >>>        {'name': 'SolarDownwardRadiation'},
-  >>>    ],
-  >>>    'calendar': ['holidays', 'hourOfDay'],
-  >>> }
-
-  >>> site_id = rb.Site.create(site_config)
-
 
 Solar
 ~~~~~
@@ -100,6 +76,30 @@ For example, to get a localized wind speed you will upload historically observed
   >>>   'latitude': 53.41,
   >>>   'longitude': 5.94,
   >>>   'measurement': 'WindSpeed'
+  >>> }
+
+  >>> site_id = rb.Site.create(site_config)
+
+Electricity demand
+~~~~~~~~~~~~~~~~~~
+
+Create a site that will be used to forecast electricity demand.
+
+::
+
+  >>> import rebase as rb
+
+  >>> site_config = {
+  >>>    'type': 'load',
+  >>>    'name': 'My load site',
+  >>>    'latitude': 53.41,
+  >>>    'longitude': 5.94,
+  >>>    'nwps': ['DWD_ICON-EU', 'NCEP_GFS'],
+  >>>    'variables': [
+  >>>        {'name': 'Temperature', 'lag': [-4, -3, -2, -1, 1, 2, 3, 4]},
+  >>>        {'name': 'SolarDownwardRadiation'},
+  >>>    ],
+  >>>    'calendar': ['holidays', 'hourOfDay'],
   >>> }
 
   >>> site_id = rb.Site.create(site_config)

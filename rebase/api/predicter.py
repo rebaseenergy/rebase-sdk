@@ -62,11 +62,7 @@ class Predicter():
 
 
 
-class PredicterTemplate():
-
-    def __init__(self, site_id, name):
-        self.site_id = site_id
-        self.name = name
+class Model():
 
 
     def load_data(self, site_config, start_date, end_date):
