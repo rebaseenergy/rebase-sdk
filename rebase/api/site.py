@@ -69,7 +69,8 @@ class Site():
         site_config = {
             'site_id': site_id,
             'latitude': 51.3,
-            'longitude': 9.2
+            'longitude': 9.2,
+            'capacity_kw_array': [{'value': 4000}]
         }
         return site_config
 
