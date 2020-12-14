@@ -14,7 +14,11 @@ def create(site_id, model):
     return r.json()
 
 
-#def train(model_id):
-#
-#    path = 'platform/v1/model/custom/create/{}'.format(site_id)
-#    r = api_request.post(path, params=params, data=data)
+def train(model_id, start_date, end_date):
+    path = 'platform/v1/model/train/{}'.format(model_id)
+    data = {
+        'start_date': start_date,
+        'end_date': end_date
+    }
+    r = api_request.post(path, data=json.dumps(data))
+    print(r.status_code)
