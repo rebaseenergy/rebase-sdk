@@ -6,7 +6,7 @@ setup(
     packages=find_packages(exclude=["*tests*"]),
     install_requires=['requests>=2.20.0', 'pandas>=1.0.0', 'dill'],
     include_package_data=True,
-    version='0.0.1-beta',
+    version='0.0.2-beta',
     license='MIT',
     description='Rebase Python SDK',
     long_description=open('README.md').read(),
