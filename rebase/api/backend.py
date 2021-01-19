@@ -14,6 +14,12 @@ def create(site_id, model):
     return r.json()
 
 
+def update(model_id, model):
+    path = 'platform/v1/model/custom/update/{}'.format(model_id)
+    r = api_request.post(path, data=model)
+    return r.json()
+
+
 def train(model_id, start_date, end_date):
     path = 'platform/v1/model/train/{}'.format(model_id)
     data = {

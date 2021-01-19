@@ -66,13 +66,8 @@ class Site():
         Raises:
             rebase.NotFoundError: if specified site does not exist
         """
-        site_config = {
-            'site_id': site_id,
-            'latitude': 51.3,
-            'longitude': 9.2,
-            'capacity_kw_array': [{'value': 4000}]
-        }
-        return site_config
+        r = api_request.get('{}/site/{}'.format(cls.base_path, site_id))
+        return r.json()
 
     @classmethod
     def delete(cls, site_id):
