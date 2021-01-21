@@ -15,9 +15,14 @@ def create(site_id, model):
 
 
 def update(model_id, model):
+    data = dill.dumps(model, recurse=True)
+    params = {'model_name': model.__name__}
     path = 'platform/v1/model/custom/update/{}'.format(model_id)
-    r = api_request.post(path, data=model)
-    return r.json()
+    r = api_request.post(path, params=params, data=data)
+    if r.status_code == 200:
+        print('Ok, updated model {}'.format(model_id))
+    else:
+        raise Exception('Failed updating model {}'.format(model_id))
 
 
 def train(model_id, start_date, end_date):

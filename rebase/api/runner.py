@@ -20,6 +20,7 @@ class ModelRunner():
 
         # need to add __builtins__ cuz of issue with Dill pickling it
         #self.model_class.get_weather.__globals__['__builtins__'] = importlib.import_module('builtins')
+        self.model_class.load_data.__globals__['__builtins__'] = importlib.import_module('builtins')
 
 
 
@@ -45,22 +46,36 @@ class ModelRunner():
         # load the previously trained model
         model_trained = self.load_pickle('trained')
         pred_df = self.model_class.predict(model_trained, weather_df)
-        print(pred_df)
         weather_df['forecast'] = pred_df
         pred_df = weather_df[['forecast']]
         pred_df = pred_df.div(self.site_config['capacity'][0]['value'])
         return pred_df
 
 
+    def upload_forecast(self, df):
+        path = 'platform/v1/model/custom/forecast/upload/{}'.format(self.model_id)
+        ref_time = df.index[0][0].strftime('%Y-%m-%d %H:%M')
+        df = df.loc[ref_time].reset_index()
+        data = {
+            'ref_time': ref_time,
+            'valid_time': df['valid_datetime'].values.tolist(),
+            'forecast': df['forecast'].values.tolist(),
+        }
+        r = api_request.post(path, data=json.dumps(data))
+        if r.status_code != 200:
+            raise Exception('Failed uploading forecast', r.status_code)
+
+
+
+
     def train(self, start_date, end_date):
         weather_df, observation_df = self.model_class.load_data(self.site_config, start_date, end_date)
         train_set = self.model_class.preprocess(weather_df, observation_df)
 
-        model_trained, score = self.model_class.train(train_set, {})
-        with tempfile.TemporaryDirectory() as tempdir:
-            save_model_temp_as = '{}_{}'.format(tempdir, self.model_config['id'])
-            upload_path = self.model_config['storage']['custom_model_trained_path']
-            cs = CloudStorage(self.bucket)
-            with open(save_model_temp_as, 'wb') as f:
-                f.write(dill.dumps(model_trained))
-                cs.upload_file(save_model_temp_as, upload_path)
+        return self.model_class.train(train_set, {})
+
+    def upload_trained_model(self, model_trained):
+        path = 'platform/v1/model/custom/upload/trained/{}'.format(self.model_id)
+        r = api_request.post(path, data=dill.dumps(model_trained))
+        if r.status_code != 200:
+            raise Exception('Failed uploading trained model', r.status_code)
