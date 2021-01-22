@@ -5,8 +5,9 @@ import json
 import pandas as pd
 from datetime import datetime
 import importlib
-import rebase.util.api_request as api_request
 import rebase as rb
+
+import rebase.util.api_request as api_request
 # This class loads custom models created by the user
 
 class ModelRunner():
@@ -66,6 +67,9 @@ class ModelRunner():
             raise Exception('Failed uploading forecast', r.status_code)
 
 
+    def backtest(self):
+        # load
+        pass
 
 
     def train(self, start_date, end_date):
