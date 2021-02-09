@@ -22,7 +22,7 @@ class ModelRunner():
         # need to add __builtins__ cuz of issue with Dill pickling it
         #self.model_class.get_weather.__globals__['__builtins__'] = importlib.import_module('builtins')
         self.model_class.load_data.__globals__['__builtins__'] = importlib.import_module('builtins')
-
+        self.model_class.setup()
 
 
     def load_model_config(self):
@@ -46,7 +46,8 @@ class ModelRunner():
         weather_df = self.model_class.load_latest_data(self.site_config)
         # load the previously trained model
         model_trained = self.load_pickle('trained')
-        pred_df = self.model_class.predict(model_trained, weather_df)
+        pred_set = self.model_class.preprocess(weather_df, observation_data=None)
+        pred_df = self.model_class.predict(model_trained, pred_set)
         weather_df['forecast'] = pred_df
         pred_df = weather_df[['forecast']]
         pred_df = pred_df.div(self.site_config['capacity'][0]['value'])
@@ -74,7 +75,7 @@ class ModelRunner():
 
     def train(self, start_date, end_date):
         weather_df, observation_df = self.model_class.load_data(self.site_config, start_date, end_date)
-        train_set = self.model_class.preprocess(weather_df, observation_df)
+        train_set = self.model_class.preprocess(weather_df, observation_data=observation_df)
 
         return self.model_class.train(train_set, {})
 

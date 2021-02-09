@@ -56,3 +56,18 @@ class Weather():
             df = resample(df, resolution)
 
         return df
+
+    @classmethod
+    def operational(cls, params, resolution=None):
+        path = '/weather/v1/get_latest_nwp'
+        json_params = json.dumps(params)        
+
+        response = api_request.get(path, params={'query_params': json_params})
+        if response.status_code != 200:
+            raise Exception('Failed retrieving weather data, status: {}'.format(response.status_code))
+        df = json_to_df(response.text)
+
+        if resolution:
+            df = resample(df, resolution)
+
+        return df

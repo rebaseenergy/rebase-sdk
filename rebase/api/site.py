@@ -189,8 +189,8 @@ class Site():
         return response.json()
 
     @classmethod
-    def predicters(cls):
-        path = '{}/model/'.format(cls.base_path)
+    def predicters(cls, site_id):
+        path = '{}/site/models/{}'.format(cls.base_path, site_id)
         # FIXME: Implement logic to list models for site
 
         response = api_request.get(path)

@@ -64,18 +64,25 @@ class Predicter():
 
 class Model():
 
+    def setup(self):
+        pass
 
     def load_data(self, site_config, start_date, end_date):
         raise NotImplementedError(
             'Your subclass must implement the load_data() method'
         )
 
-    def preprocess(self, weather_data, observation_data):
+    def load_latest_data(self, site_config):
+        raise NotImplementedError(
+            'Your subclass must implement the load_data() method'
+        )
+
+    def preprocess(self, weather_data, observation_data=None):
         raise NotImplementedError(
             'Your subclass must implement the preprocess() method'
         )
 
-    def train(self, train_set):
+    def train(self, train_set, params={}):
         raise NotImplementedError(
             'Your subclass must implement the train() method'
         )
@@ -83,7 +90,7 @@ class Model():
 
     # weather_df - weather for a ref time
     # target_observations - like recent production power, could be used for intraday
-    def predict(self, weather_df, target_observations):
+    def predict(self, predict_set):
         raise NotImplementedError(
             'Your subclass must implement the predict() method'
         )
