@@ -50,7 +50,8 @@ class ModelRunner():
         pred_df = self.model_class.predict(model_trained, pred_set)
         weather_df['forecast'] = pred_df
         pred_df = weather_df[['forecast']]
-        pred_df = pred_df.div(self.site_config['capacity'][0]['value'])
+        if 'capacity' in self.site_config and len(self.site_config['capacity'])>0:
+            pred_df = pred_df.div(self.site_config['capacity'][-1]['value'])
         return pred_df
 
 
