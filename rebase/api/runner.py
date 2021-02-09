@@ -43,10 +43,10 @@ class ModelRunner():
 
     def predict(self, ref_time=None):
         ref_time = datetime.strptime(ref_time, '%Y/%m/%d/%H') if ref_time else ref_time
-        weather_df = self.model_class.load_latest_data(self.site_config)
+        weather_df, obs_df = self.model_class.load_latest_data(self.site_config)
         # load the previously trained model
         model_trained = self.load_pickle('trained')
-        pred_set = self.model_class.preprocess(weather_df, observation_data=None)
+        pred_set = self.model_class.preprocess(weather_df, observation_data=obs_df)
         pred_df = self.model_class.predict(model_trained, pred_set)
         weather_df['forecast'] = pred_df
         pred_df = weather_df[['forecast']]
