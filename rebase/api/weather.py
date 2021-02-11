@@ -2,6 +2,8 @@ import rebase.util.api_request as api_request
 import pandas as pd
 import json
 import pickle
+import rebase as rb
+import hashlib
 
 def get_cached_weather(cache_file):
     try:
@@ -41,7 +43,8 @@ class Weather():
     def historical(cls, params, resolution=None):
         path = '/weather/v1/get_nwp'
         json_params = json.dumps(params)
-        cache_file = 'cache/{}.pickle'.format(json_params)
+        params_hash = hashlib.md5(json_params.encode('utf-8')).hexdigest()
+        cache_file = '{}/{}.pickle'.format(rb.cache_dir, params_hash)
 
         df = get_cached_weather(cache_file)
         if df is None:
