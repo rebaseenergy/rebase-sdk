@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime
 import importlib
 import rebase as rb
+import joblib
 
 import rebase.util.api_request as api_request
 # This class loads custom models created by the user
@@ -54,31 +55,46 @@ class ModelRunner():
             pred_df = pred_df.div(self.site_config['capacity'][-1]['value'])
         return pred_df
 
-
-    def upload_forecast(self, df):
-        path = 'platform/v1/model/custom/forecast/upload/{}'.format(self.model_id)
-        ref_time = df.index[0][0].strftime('%Y-%m-%d %H:%M')
-        df = df.loc[ref_time].reset_index()
+    def upload_single_forecast(self, ref_time, df_ref_time):
+        to_iso = lambda d : d.strftime('%Y%m%dT%H:%M:%SZ')
         data = {
-            'ref_time': ref_time,
-            'valid_time': df['valid_datetime'].values.tolist(),
-            'forecast': df['forecast'].values.tolist(),
+            'ref_time': to_iso(ref_time),
+            'valid_time': [to_iso(d) for d in df_ref_time.index],
+            'forecast': df_ref_time['forecast'].values.tolist()
         }
+
+        path = 'platform/v1/model/custom/forecast/upload/{}'.format(self.model_id)
         r = api_request.post(path, data=json.dumps(data))
         if r.status_code != 200:
-            raise Exception('Failed uploading forecast', r.status_code)
+            raise Exception(f'Failed uploading forecast: model_id: {self.model_id}', r.status_code)
+
+        return True
+
+    def upload_forecast(self, df):
+        ref_times = df.index.get_level_values('ref_datetime').unique()
+        with joblib.parallel_backend("threading"):
+            results = joblib.Parallel(n_jobs=4)(
+                    joblib.delayed(self.upload_single_forecast)(ref_time, df.loc[(ref_time), :])
+                           for ref_time in ref_times)
+
+        if not all(results):
+            raise Exception("There were some errors while uploading the forecasts, model_id: %s: %s" % (self.model_id, list(zip(ref_times, results))))
 
 
     def backtest(self):
         # load
         pass
 
+    def hyperparam_search(self, params_search_space):
+        
+        pass
 
-    def train(self, start_date, end_date):
+
+    def train(self, start_date, end_date, params={}):
         weather_df, observation_df = self.model_class.load_data(self.site_config, start_date, end_date)
         train_set = self.model_class.preprocess(weather_df, observation_data=observation_df)
 
-        return self.model_class.train(train_set, {})
+        return self.model_class.train(train_set, params=params)
 
     def upload_trained_model(self, model_trained):
         path = 'platform/v1/model/custom/upload/trained/{}'.format(self.model_id)
