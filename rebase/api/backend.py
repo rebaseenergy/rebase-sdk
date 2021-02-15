@@ -54,11 +54,12 @@ def hyperparam_search(model_id, params={}, hyperparams={}, n_trials=10, compute_
         raise Exception(f"Error starting hyperparam_search for model {model_id}: {r.content.decode('utf-8')}")
     return r.json()
 
-def report_result(model_id, params={}, score=None, exception=None):
+def report_result(model_id, job_name=None, params={}, score=None, exception=None):
     path = 'platform/v1/model/hyperparam_result/{}'.format(model_id)
     params['model_id'] = model_id
     params['api_key'] = rb.api_key
     data = {
+        'job_name': job_name,
         'params': params,
         'score': score,
         'exception': exception
