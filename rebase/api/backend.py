@@ -53,3 +53,17 @@ def hyperparam_search(model_id, params={}, hyperparams={}, n_trials=10, compute_
     if r.status_code != 200:
         raise Exception(f"Error starting hyperparam_search for model {model_id}: {r.content.decode('utf-8')}")
     return r.json()
+
+def report_result(model_id, params={}, score=None, exception=None):
+    path = 'platform/v1/model/hyperparam_result/{}'.format(model_id)
+    params['model_id'] = model_id
+    params['api_key'] = rb.api_key
+    data = {
+        'params': params,
+        'score': score,
+        'exception': exception
+    }
+    r = api_request.post(path, data=json.dumps(data))
+    if r.status_code != 200:
+        raise Exception(f"Error reporting hyperparam result for model {model_id}: {r.content.decode('utf-8')}")
+    return r.json()
