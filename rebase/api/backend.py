@@ -68,3 +68,11 @@ def report_result(model_id, job_name=None, params={}, score=None, exception=None
     if r.status_code != 200:
         raise Exception(f"Error reporting hyperparam result for model {model_id}: {r.content.decode('utf-8')}")
     return r.json()
+
+def hyperparam_results(model_id, task_key):
+    r = api_request.get('platform/v1/model/hyperparam_allresults/{}'.format(model_id), 
+                        params={'api_key': rb.api_key,
+                                'task_key': task_key})
+    if r.status_code != 200:
+        raise Exception(f"Error starting hyperparam_results for model {model_id}: {r.content.decode('utf-8')}")
+    return r.json()
