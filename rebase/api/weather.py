@@ -50,8 +50,12 @@ class Weather():
         if df is None:
             response = api_request.get(path, params={'query_params': json_params})
             if response.status_code != 200:
-                raise Exception('Failed retrieving weather data, status: {}'.format(response.status_code))
-            df = json_to_df(response.text)
+                raise Exception('Failed retrieving weather data, status: {}, data: {}'.format(response.status_code, response.content.decode('utf-8')))
+            try:
+                df = json_to_df(response.text)
+            except Exception as e:
+                print("Error converting to json: {}".format(response.text))
+                raise e
 
         save_cached_weather(cache_file, df)
 
