@@ -1,11 +1,9 @@
-API Reference
-=============
-
-Site
-----
+===========
+rebase.Site
+===========
 
 Overview
-~~~~~~~~
+--------
 
 .. currentmodule:: rebase.Site
 
@@ -21,7 +19,7 @@ Overview
 
 
 Methods
-~~~~~~~
+-------
 .. autoclass:: rebase.Site
    :members:
 
@@ -29,7 +27,7 @@ Methods
 .. _configurations:
 
 Configurations
-~~~~~~~~~~~~~~~~~~~
+--------------
 
 There are currently 4 different supported types of sites:
 
@@ -43,7 +41,7 @@ Each of them requires a specific configuration when being created from rb.Site.c
 .. _solar_config:
 
 Solar
-^^^^^
+~~~~~
 
 .. list-table:: Required attributes
    :widths: 15 65 20
@@ -103,7 +101,7 @@ Example:
 .. _wind_config:
 
 Wind
-^^^^
+~~~~
 
 .. list-table:: Required attributes
    :widths: 15 65 20
@@ -151,7 +149,7 @@ Example:
 .. _localized_config:
 
 Localized weather
-^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~
 
 .. list-table:: Required attributes
    :widths: 15 65 20
@@ -194,7 +192,7 @@ Example:
 .. _load_config:
 
 Electricity demand
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 .. list-table:: Required attributes
    :widths: 15 65 20

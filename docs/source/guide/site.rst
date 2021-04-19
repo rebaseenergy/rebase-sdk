@@ -1,6 +1,5 @@
-
-User guide
-==========
+Setting up a site
+=================
 
 Create a site
 -------------
@@ -125,6 +124,7 @@ Get a single site by its id using :meth:`rebase.Site.get`
   >>> sites = rb.Site.get(site_id)
 
 
+.. _upload_data:
 
 Upload data to train on
 -----------------------
@@ -182,6 +182,8 @@ Check your site's training status. See :meth:`rebase.Site.status` for more infor
           {'state': 'complete', 'timestamp_utc': '2020-10-12 13:05:23'},
       ]
   }
+
+.. _get_site_forecast:
 
 Get a site forecast
 -------------------

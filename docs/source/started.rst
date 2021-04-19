@@ -1,19 +1,21 @@
+===============
 Getting started
 ===============
+
 
 Installation
 ------------
 
 ::
 
-  pip install rebase
+  pip install rebase-toolkit
 
 
 Authentication
 --------------
 Before you can use any of the SDK functionality, you must set your API key.
 
-Your API key can be found `here <https://dashboard.rebase.energy/user>`_.
+Your API key can be found `here <https://dashboard.rebase.energy/user/api>`_.
 
 
 ::

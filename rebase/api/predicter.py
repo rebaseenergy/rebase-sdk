@@ -67,12 +67,35 @@ class Model():
     def setup(self):
         pass
 
+
     def load_data(self, site_config, start_date, end_date):
+        """This method should load the data for training
+
+        Args:
+            site_config (dict): config for the site
+            start_date (datetime): the start date for the period
+            end_date (datetime): the end date for the period
+
+        Returns:
+            - pd.DataFrame: one df
+            - pd.DataFrame: one df
+
+        """
+
         raise NotImplementedError(
             'Your subclass must implement the load_data() method'
         )
 
     def load_latest_data(self, site_config):
+        """This method should load the predict data for training
+
+        Args:
+            site_config (dict): config for the site
+
+        Returns:
+
+        """
+
         raise NotImplementedError(
             'Your subclass must implement the load_data() method'
         )

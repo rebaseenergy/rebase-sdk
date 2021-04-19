@@ -12,6 +12,7 @@
 #
 import os
 import sys
+from datetime import datetime
 sys.path.insert(0, os.path.abspath('../rebase/'))
 sys.path.insert(0, os.path.abspath('../'))
 
@@ -19,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'REBASE SDK'
-copyright = '2020, REBASE ENERGY'
+copyright = '{}, REBASE ENERGY'.format(datetime.utcnow().year)
 author = 'Henrik Kälvegren'
 
 # The full version, including alpha/beta/rc tags
