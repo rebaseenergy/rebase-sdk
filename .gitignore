@@ -8,3 +8,5 @@ notebooks
 **/*.ipynb_checkpoints/
 docs/_build
 *.egg-info
+**dist
+**build
