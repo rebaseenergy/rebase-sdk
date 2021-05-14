@@ -2,6 +2,7 @@ import requests
 import rebase as rb
 import time
 import random
+from rebase.error import AuthenticationError
 
 def robust(max_tries=5, retry_statuses=[429]):
     def decorator(func):
@@ -13,10 +14,10 @@ def robust(max_tries=5, retry_statuses=[429]):
                     if n_try < max_tries:
                         time.sleep(min(2**n_try * (1+random.random()), 300))
                         n_try += 1
-                    else:         
+                    else:
                         return response
                 else:
-                    return response                    
+                    return response
         return handle_call
     return decorator
 
@@ -26,7 +27,7 @@ def get(path, **kwargs):
     url = rb.base_api_url+path
     response = requests.get(url, **kwargs, headers=headers)
     if response.status_code == 401:
-        raise Exception('Unathorized')
+        raise AuthenticationError('Unathorized')
 
     return response
 
@@ -40,7 +41,7 @@ def post(path, **kwargs):
     url = rb.base_api_url+path
     response = requests.post(url, **kwargs, headers=headers)
     if response.status_code == 401:
-        raise Exception('Unathorized')
+        raise AuthenticationError('Unathorized')
 
     return response
 
@@ -49,6 +50,6 @@ def delete(path, **kwargs):
     url = rb.base_api_url+path
     response = requests.delete(url, **kwargs, headers=headers)
     if response.status_code == 401:
-        raise Exception('Unathorized')
+        raise AuthenticationError('Unathorized')
 
     return response

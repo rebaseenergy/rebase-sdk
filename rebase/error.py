@@ -26,3 +26,8 @@ class ApiError(RebaseError):
     """If API returend unexpected error
     """
     pass
+
+
+class InvalidInputError(RebaseError):
+    """Raised when user input results in 400 bad request
+    """
